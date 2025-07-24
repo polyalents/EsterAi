@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Система конфигурации для AI Desktop приложения
+РЎРёСЃС‚РµРјР° РєРѕРЅС„РёРіСѓСЂР°С†РёРё РґР»СЏ AI Desktop РїСЂРёР»РѕР¶РµРЅРёСЏ
 """
 
 import os
@@ -12,21 +12,21 @@ from pathlib import Path
 
 
 class Config:
-    """Класс для управления конфигурацией приложения"""
+    """РљР»Р°СЃСЃ РґР»СЏ СѓРїСЂР°РІР»РµРЅРёСЏ РєРѕРЅС„РёРіСѓСЂР°С†РёРµР№ РїСЂРёР»РѕР¶РµРЅРёСЏ"""
     
     def __init__(self, config_dir: Optional[str] = None):
-        """Инициализация конфигурации"""
-        # Определение директории конфигурации
+        """РРЅРёС†РёР°Р»РёР·Р°С†РёСЏ РєРѕРЅС„РёРіСѓСЂР°С†РёРё"""
+        # РћРїСЂРµРґРµР»РµРЅРёРµ РґРёСЂРµРєС‚РѕСЂРёРё РєРѕРЅС„РёРіСѓСЂР°С†РёРё
         if config_dir:
             self.config_dir = Path(config_dir)
         else:
-            # Пользовательская директория для конфигурации
+            # РџРѕР»СЊР·РѕРІР°С‚РµР»СЊСЃРєР°СЏ РґРёСЂРµРєС‚РѕСЂРёСЏ РґР»СЏ РєРѕРЅС„РёРіСѓСЂР°С†РёРё
             if os.name == 'nt':  # Windows
                 self.config_dir = Path.home() / "AppData" / "Local" / "AIDesktopGenerator"
             else:  # Linux/Mac
                 self.config_dir = Path.home() / ".config" / "ai-desktop-generator"
                 
-        # Создание директорий
+        # РЎРѕР·РґР°РЅРёРµ РґРёСЂРµРєС‚РѕСЂРёР№
         try:
             self.config_dir.mkdir(parents=True, exist_ok=True)
             self.cache_dir = self.config_dir / "cache"
@@ -36,7 +36,7 @@ class Config:
             for directory in [self.cache_dir, self.models_dir, self.projects_dir]:
                 directory.mkdir(exist_ok=True)
         except Exception:
-            # Fallback к локальным папкам если нет прав
+            # Fallback Рє Р»РѕРєР°Р»СЊРЅС‹Рј РїР°РїРєР°Рј РµСЃР»Рё РЅРµС‚ РїСЂР°РІ
             self.config_dir = Path(".")
             self.cache_dir = Path("cache")
             self.models_dir = Path("models_cache")
@@ -45,19 +45,19 @@ class Config:
             for directory in [self.cache_dir, self.models_dir, self.projects_dir]:
                 directory.mkdir(exist_ok=True)
             
-        # Файлы конфигурации
+        # Р¤Р°Р№Р»С‹ РєРѕРЅС„РёРіСѓСЂР°С†РёРё
         self.config_file = self.config_dir / "config.json"
         self.settings_file = self.config_dir / "settings.json"
         
-        # Загрузка конфигурации
+        # Р—Р°РіСЂСѓР·РєР° РєРѕРЅС„РёРіСѓСЂР°С†РёРё
         self._config = self._load_config()
         self._settings = self._load_settings()
         
-        # Настройка логирования
+        # РќР°СЃС‚СЂРѕР№РєР° Р»РѕРіРёСЂРѕРІР°РЅРёСЏ
         self.logger = logging.getLogger(__name__)
         
     def _load_config(self) -> Dict[str, Any]:
-        """Загрузка основной конфигурации"""
+        """Р—Р°РіСЂСѓР·РєР° РѕСЃРЅРѕРІРЅРѕР№ РєРѕРЅС„РёРіСѓСЂР°С†РёРё"""
         default_config = {
             "app_version": "1.0.0",
             "first_run": True,
@@ -78,9 +78,9 @@ class Config:
         return default_config
         
     def _load_settings(self) -> Dict[str, Any]:
-        """Загрузка пользовательских настроек"""
+        """Р—Р°РіСЂСѓР·РєР° РїРѕР»СЊР·РѕРІР°С‚РµР»СЊСЃРєРёС… РЅР°СЃС‚СЂРѕРµРє"""
         default_settings = {
-            # Настройки интерфейса
+            # РќР°СЃС‚СЂРѕР№РєРё РёРЅС‚РµСЂС„РµР№СЃР°
             "ui": {
                 "theme": "dark",
                 "language": "ru",
@@ -90,20 +90,20 @@ class Config:
                 "window_state": None
             },
             
-            # Настройки текстовой генерации
+            # РќР°СЃС‚СЂРѕР№РєРё С‚РµРєСЃС‚РѕРІРѕР№ РіРµРЅРµСЂР°С†РёРё
             "text_generation": {
-                "default_model": "GPT-J 6B (Рекомендуется)",
-                "default_style": "Нейтральный",
+                "default_model": "GPT-J 6B (Р РµРєРѕРјРµРЅРґСѓРµС‚СЃСЏ)",
+                "default_style": "РќРµР№С‚СЂР°Р»СЊРЅС‹Р№",
                 "default_max_length": 500,
                 "default_temperature": 0.7,
                 "auto_load_model": False,
                 "quantization": True
             },
             
-            # Настройки генерации изображений
+            # РќР°СЃС‚СЂРѕР№РєРё РіРµРЅРµСЂР°С†РёРё РёР·РѕР±СЂР°Р¶РµРЅРёР№
             "image_generation": {
                 "default_model": "Stable Diffusion v1.5",
-                "default_style": "Реалистичный",
+                "default_style": "Р РµР°Р»РёСЃС‚РёС‡РЅС‹Р№",
                 "default_width": 512,
                 "default_height": 512,
                 "default_steps": 50,
@@ -112,14 +112,14 @@ class Config:
                 "auto_load_model": False
             },
             
-            # Системные настройки
+            # РЎРёСЃС‚РµРјРЅС‹Рµ РЅР°СЃС‚СЂРѕР№РєРё
             "system": {
                 "device": "auto",  # auto, cuda, cpu
                 "cache_models": True,
                 "cleanup_on_exit": True
             },
             
-            # Настройки файлов
+            # РќР°СЃС‚СЂРѕР№РєРё С„Р°Р№Р»РѕРІ
             "files": {
                 "last_project_dir": str(self.projects_dir),
                 "last_import_dir": str(Path.home()),
@@ -140,7 +140,7 @@ class Config:
         return default_settings
         
     def _deep_update(self, base_dict: Dict, update_dict: Dict):
-        """Рекурсивное обновление словаря"""
+        """Р РµРєСѓСЂСЃРёРІРЅРѕРµ РѕР±РЅРѕРІР»РµРЅРёРµ СЃР»РѕРІР°СЂСЏ"""
         for key, value in update_dict.items():
             if key in base_dict and isinstance(base_dict[key], dict) and isinstance(value, dict):
                 self._deep_update(base_dict[key], value)
@@ -148,7 +148,7 @@ class Config:
                 base_dict[key] = value
                 
     def get(self, key: str, default: Any = None) -> Any:
-        """Получение значения из конфигурации"""
+        """РџРѕР»СѓС‡РµРЅРёРµ Р·РЅР°С‡РµРЅРёСЏ РёР· РєРѕРЅС„РёРіСѓСЂР°С†РёРё"""
         try:
             if '.' in key:
                 keys = key.split('.')
@@ -162,7 +162,7 @@ class Config:
             return default
             
     def set(self, key: str, value: Any):
-        """Установка значения в конфигурации"""
+        """РЈСЃС‚Р°РЅРѕРІРєР° Р·РЅР°С‡РµРЅРёСЏ РІ РєРѕРЅС„РёРіСѓСЂР°С†РёРё"""
         try:
             if '.' in key:
                 keys = key.split('.')
@@ -178,7 +178,7 @@ class Config:
             pass
             
     def save(self):
-        """Сохранение конфигурации"""
+        """РЎРѕС…СЂР°РЅРµРЅРёРµ РєРѕРЅС„РёРіСѓСЂР°С†РёРё"""
         try:
             with open(self.config_file, 'w', encoding='utf-8') as f:
                 json.dump(self._config, f, indent=2, ensure_ascii=False)
@@ -189,13 +189,13 @@ class Config:
             pass
             
     def get_cache_dir(self) -> Path:
-        """Получение директории кэша"""
+        """РџРѕР»СѓС‡РµРЅРёРµ РґРёСЂРµРєС‚РѕСЂРёРё РєСЌС€Р°"""
         return self.cache_dir
         
     def get_models_dir(self) -> Path:
-        """Получение директории моделей"""
+        """РџРѕР»СѓС‡РµРЅРёРµ РґРёСЂРµРєС‚РѕСЂРёРё РјРѕРґРµР»РµР№"""
         return self.models_dir
         
     def get_projects_dir(self) -> Path:
-        """Получение директории проектов"""
+        """РџРѕР»СѓС‡РµРЅРёРµ РґРёСЂРµРєС‚РѕСЂРёРё РїСЂРѕРµРєС‚РѕРІ"""
         return self.projects_dir
