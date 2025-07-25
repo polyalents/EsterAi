@@ -12,12 +12,7 @@ from PyQt5.QtWidgets import (QWidget, QVBoxLayout, QHBoxLayout, QSplitter,
 from PyQt5.QtCore import Qt, QThread, pyqtSignal, QTimer
 from PyQt5.QtGui import QFont
 
-try:
-    from models.text_generator import TextGenerator
-except ImportError:
-    import sys
-    sys.path.append('..')
-    from models.text_generator import TextGenerator
+from ..models.text_generator import TextGenerator
 
 
 class TextGenerationWorker(QThread):
