@@ -1,4 +1,4 @@
-﻿#!/usr/bin/env python3
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
 Вкладка для генерации изображений - упрощенная версия
@@ -12,12 +12,7 @@ from PyQt5.QtWidgets import (QWidget, QVBoxLayout, QHBoxLayout, QSplitter,
 from PyQt5.QtCore import Qt, QThread, pyqtSignal, QSize
 from PyQt5.QtGui import QPixmap, QImage
 
-try:
-    from models.image_generator import ImageGenerator
-except ImportError:
-    import sys
-    sys.path.append('..')
-    from models.image_generator import ImageGenerator
+from ..models.image_generator import ImageGenerator
 
 
 class ImageGenerationWorker(QThread):
