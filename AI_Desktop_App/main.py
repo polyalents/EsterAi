@@ -1,4 +1,4 @@
-﻿#!/usr/bin/env python3
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
 AI Desktop Application
@@ -8,20 +8,56 @@ AI Desktop Application
 
 import sys
 import os
+
+from pathlib import Path
+
+# Для окружений без графической подсистемы (например, CI)
+if sys.platform.startswith("linux") and "DISPLAY" not in os.environ:
+    os.environ.setdefault("QT_QPA_PLATFORM", "offscreen")
+
 from PyQt5.QtWidgets import QApplication, QMessageBox
-from PyQt5.QtCore import Qt
+from PyQt5.QtCore import Qt, QLibraryInfo
 from PyQt5.QtGui import QIcon, QFont
 
-# Добавляем текущую директорию в путь
-sys.path.append(os.path.dirname(os.path.abspath(__file__)))
-
 try:
-    from ui.main_window import MainWindow
-    from utils.config import Config
+    from .ui.main_window import MainWindow
+    from .utils.config import Config
 except ImportError as e:
     print(f"Ошибка импорта: {e}")
     print("Убедитесь, что все файлы созданы правильно")
     sys.exit(1)
+
+
+def setup_qt_environment() -> bool:
+    """Ensure Qt platform plugins are accessible (mainly for Windows)."""
+    try:
+        import PyQt5
+    except ImportError:
+        print("❌ PyQt5 не найден. Установите зависимости: pip install -r requirements.txt")
+        return False
+
+    venv_path = Path(sys.executable).parent.parent
+
+    plugin_paths = [
+        venv_path / "Lib" / "site-packages" / "PyQt5" / "Qt5" / "plugins",
+        venv_path / "Lib" / "site-packages" / "PyQt5" / "Qt" / "plugins",
+        Path(QLibraryInfo.location(QLibraryInfo.PluginsPath)),
+    ]
+
+    for plugin_path in plugin_paths:
+        if plugin_path.exists():
+            platforms_path = plugin_path / "platforms"
+            if platforms_path.exists():
+                os.environ["QT_QPA_PLATFORM_PLUGIN_PATH"] = str(platforms_path)
+                print(f"✅ Qt plugins found: {platforms_path}")
+                return True
+
+    if sys.platform.startswith("win"):
+        os.environ["QT_QPA_PLATFORM"] = "windows"
+        print("⚠️ Qt plugins path not found, using default windows platform.")
+    else:
+        print("⚠️ Qt plugins path not found. Application may fail to start.")
+    return True
 
 
 class AIDesktopApp:
@@ -281,7 +317,10 @@ def main():
         print("\n🔧 Установите зависимости:")
         print("pip install -r requirements.txt")
         return 1
-    
+
+    if not setup_qt_environment():
+        return 1
+
     # Создание и запуск приложения
     try:
         app = AIDesktopApp()
