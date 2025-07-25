@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Главное окно приложения AI Desktop Generator - упрощенная версия
+Главное окно приложения EsterAI - упрощенная версия
 """
 
 import os
@@ -47,7 +47,7 @@ class MainWindow(QMainWindow):
         
     def init_ui(self):
         """Инициализация интерфейса"""
-        self.setWindowTitle("AI Desktop Generator v1.0.0")
+        self.setWindowTitle("EsterAI v1.0.0")
         self.setMinimumSize(1200, 800)
         self.setGeometry(100, 100, 1400, 900)
         
@@ -323,7 +323,7 @@ CUDA доступна: {'Да' if torch.cuda.is_available() else 'Нет'}
         QMessageBox.about(
             self,
             'О программе',
-            '''<h3>AI Desktop Generator v1.0.0</h3>
+            '''<h3>EsterAI v1.0.0</h3>
             <p>Мощное desktop приложение для генерации текста и изображений с помощью искусственного интеллекта.</p>
             
             <p><b>Возможности:</b></p>

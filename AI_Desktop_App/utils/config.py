@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Система конфигурации для AI Desktop приложения
+Система конфигурации для приложения EsterAI
 """
 
 import os
@@ -22,9 +22,9 @@ class Config:
         else:
             # Пользовательская директория для конфигурации
             if os.name == 'nt':  # Windows
-                self.config_dir = Path.home() / "AppData" / "Local" / "AIDesktopGenerator"
+                self.config_dir = Path.home() / "AppData" / "Local" / "EsterAI"
             else:  # Linux/Mac
-                self.config_dir = Path.home() / ".config" / "ai-desktop-generator"
+                self.config_dir = Path.home() / ".config" / "esterai"
                 
         # Создание директорий
         try:

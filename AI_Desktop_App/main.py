@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-AI Desktop Application
+EsterAI Desktop Application
 Приложение для генерации текста и изображений с помощью нейросетей
 Версия: 1.0.0
 """
@@ -60,7 +60,7 @@ def setup_qt_environment() -> bool:
     return True
 
 
-class AIDesktopApp:
+class EsterAIApp:
     def __init__(self):
         self.app = QApplication(sys.argv)
         self.setup_application()
@@ -69,7 +69,7 @@ class AIDesktopApp:
     def setup_application(self):
         """Настройка основных параметров приложения"""
         # Информация о приложении
-        self.app.setApplicationName("AI Desktop Generator")
+        self.app.setApplicationName("EsterAI")
         self.app.setApplicationVersion("1.0.0")
         self.app.setOrganizationName("AI Creative Studio")
         
@@ -296,14 +296,14 @@ def main():
     # Обработка аргументов командной строки
     if len(sys.argv) > 1:
         if sys.argv[1] in ['--help', '-h']:
-            print("AI Desktop Generator v1.0.0")
+            print("EsterAI v1.0.0")
             print("Использование: python main.py [опции]")
             print("\nОпции:")
             print("  --help, -h     Показать эту справку")
             print("  --version, -v  Показать версию")
             return 0
         elif sys.argv[1] in ['--version', '-v']:
-            print("AI Desktop Generator v1.0.0")
+            print("EsterAI v1.0.0")
             return 0
     
     # Проверка зависимостей
@@ -323,7 +323,7 @@ def main():
 
     # Создание и запуск приложения
     try:
-        app = AIDesktopApp()
+        app = EsterAIApp()
         return app.run()
     except Exception as e:
         print(f"❌ Критическая ошибка: {e}")
