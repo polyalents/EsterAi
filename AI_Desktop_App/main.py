@@ -8,20 +8,51 @@ AI Desktop Application
 
 import sys
 import os
+import urllib.request
+from pathlib import Path
 from PyQt5.QtWidgets import QApplication, QMessageBox
-from PyQt5.QtCore import Qt
+from PyQt5.QtCore import Qt, QLibraryInfo
 from PyQt5.QtGui import QIcon, QFont
 
-# Добавляем текущую директорию в путь
-sys.path.append(os.path.dirname(os.path.abspath(__file__)))
-
 try:
-    from ui.main_window import MainWindow
-    from utils.config import Config
+    from .ui.main_window import MainWindow
+    from .utils.config import Config
 except ImportError as e:
     print(f"Ошибка импорта: {e}")
     print("Убедитесь, что все файлы созданы правильно")
     sys.exit(1)
+
+
+def setup_qt_environment() -> bool:
+    """Ensure Qt platform plugins are accessible (mainly for Windows)."""
+    try:
+        import PyQt5
+    except ImportError:
+        print("❌ PyQt5 не найден. Установите зависимости: pip install -r requirements.txt")
+        return False
+
+    plugins_root = QLibraryInfo.location(QLibraryInfo.PluginsPath)
+    plugin_dir = os.path.join(plugins_root, "platforms")
+
+    if sys.platform.startswith("win"):
+        project_dir = Path(__file__).resolve().parent.parent
+        venv_dll = project_dir / ".venv" / "Lib" / "site-packages" / "PyQt5" / "Qt" / "plugins" / "platforms" / "qwindows.dll"
+        if not venv_dll.exists():
+            os.makedirs(venv_dll.parent, exist_ok=True)
+            url = (
+                "https://github.com/Alexhuszagh/pyqt5-tools/raw/master/pyqt5_tools/Qt/plugins/platforms/qwindows.dll"
+            )
+            try:
+                print("Скачивание qwindows.dll...")
+                urllib.request.urlretrieve(url, str(venv_dll))
+                print("qwindows.dll скачан")
+            except Exception as e:
+                print(f"❌ Не удалось скачать qwindows.dll: {e}")
+                return False
+        plugin_dir = str(venv_dll.parent)
+
+    os.environ["QT_QPA_PLATFORM_PLUGIN_PATH"] = str(plugin_dir)
+    return True
 
 
 class AIDesktopApp:
@@ -281,7 +312,10 @@ def main():
         print("\n🔧 Установите зависимости:")
         print("pip install -r requirements.txt")
         return 1
-    
+
+    if not setup_qt_environment():
+        return 1
+
     # Создание и запуск приложения
     try:
         app = AIDesktopApp()
