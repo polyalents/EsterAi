@@ -1,4 +1,8 @@
+
 #!/usr/bin/env python3
+
+﻿#!/usr/bin/env python3
+
 # -*- coding: utf-8 -*-
 """
 Главное окно приложения AI Desktop Generator - упрощенная версия
@@ -401,4 +405,8 @@ CUDA доступна: {'Да' if torch.cuda.is_available() else 'Нет'}
         except Exception:
             pass
             
+
         event.accept()
+
+        event.accept()
+
