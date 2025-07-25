@@ -1,7 +1,4 @@
-
 #!/usr/bin/env python3
-
-﻿#!/usr/bin/env python3
 
 # -*- coding: utf-8 -*-
 """
@@ -16,7 +13,7 @@ from PyQt5.QtWidgets import (QWidget, QVBoxLayout, QHBoxLayout, QSplitter,
 from PyQt5.QtCore import Qt, QThread, pyqtSignal, QTimer
 from PyQt5.QtGui import QFont
 
-from ..models.text_generator import TextGenerator
+from models.text_generator import TextGenerator
 
 
 class TextGenerationWorker(QThread):
