@@ -15,8 +15,8 @@ from PyQt5.QtCore import Qt, QLibraryInfo
 from PyQt5.QtGui import QIcon, QFont
 
 try:
-    from .ui.main_window import MainWindow
-    from .utils.config import Config
+    from ui.main_window import MainWindow
+    from utils.config import Config
 except ImportError as e:
     print(f"Ошибка импорта: {e}")
     print("Убедитесь, что все файлы созданы правильно")
@@ -31,8 +31,6 @@ def setup_qt_environment() -> bool:
         print("❌ PyQt5 не найден. Установите зависимости: pip install -r requirements.txt")
         return False
 
- uuc0jm-codex/fix-import-paths-for-ai_desktop_app
-
     plugins_root = Path(QLibraryInfo.location(QLibraryInfo.PluginsPath))
     plugin_dir = plugins_root / "platforms"
 
@@ -40,36 +38,14 @@ def setup_qt_environment() -> bool:
         qwindows_path = plugin_dir / "qwindows.dll"
         if not qwindows_path.exists():
             plugin_dir.mkdir(parents=True, exist_ok=True)
- uuc0jm-codex/fix-import-paths-for-ai_desktop_app
-
-    plugins_root = QLibraryInfo.location(QLibraryInfo.PluginsPath)
-    plugin_dir = os.path.join(plugins_root, "platforms")
-
-    if sys.platform.startswith("win"):
-        project_dir = Path(__file__).resolve().parent.parent
-        venv_dll = project_dir / ".venv" / "Lib" / "site-packages" / "PyQt5" / "Qt" / "plugins" / "platforms" / "qwindows.dll"
-        if not venv_dll.exists():
-            os.makedirs(venv_dll.parent, exist_ok=True)
-
-            url = (
-                "https://github.com/Alexhuszagh/pyqt5-tools/raw/master/pyqt5_tools/Qt/plugins/platforms/qwindows.dll"
-            )
+            url = "https://github.com/Alexhuszagh/pyqt5-tools/raw/master/pyqt5_tools/Qt/plugins/platforms/qwindows.dll"
             try:
                 print("Скачивание qwindows.dll...")
                 urllib.request.urlretrieve(url, str(qwindows_path))
-
-
-                urllib.request.urlretrieve(url, str(qwindows_path))
-
-                urllib.request.urlretrieve(url, str(venv_dll))
-
                 print("qwindows.dll скачан")
             except Exception as e:
                 print(f"❌ Не удалось скачать qwindows.dll: {e}")
                 return False
-
-        plugin_dir = str(venv_dll.parent)
-
 
     os.environ["QT_QPA_PLATFORM_PLUGIN_PATH"] = str(plugin_dir)
     return True

@@ -48,3 +48,5 @@ venv/
 *.vsidx
 *.db-shm
 *.db-wal
+hf_models/
+!data/**/.gitkeep

@@ -1,7 +1,4 @@
-
 #!/usr/bin/env python3
-
-﻿#!/usr/bin/env python3
 
 # -*- coding: utf-8 -*-
 """
@@ -28,7 +25,7 @@ from PyQt5.QtGui import QKeySequence
 
 from .text_tab import TextGenerationTab
 from .image_tab import ImageGenerationTab
-from ..utils.config import Config
+from utils.config import Config
 
 
 class MainWindow(QMainWindow):
