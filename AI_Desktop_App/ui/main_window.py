@@ -5,23 +5,26 @@
 """
 
 import os
-from PyQt5.QtWidgets import (QMainWindow, QTabWidget, QVBoxLayout, QHBoxLayout, 
-                            QWidget, QMenuBar, QStatusBar, QAction, QFileDialog,
-                            QMessageBox, QProgressBar, QLabel)
+from PyQt5.QtWidgets import (
+    QMainWindow,
+    QTabWidget,
+    QVBoxLayout,
+    QHBoxLayout,
+    QWidget,
+    QMenuBar,
+    QStatusBar,
+    QAction,
+    QFileDialog,
+    QMessageBox,
+    QProgressBar,
+    QLabel,
+)
 from PyQt5.QtCore import Qt, pyqtSignal
 from PyQt5.QtGui import QKeySequence
 
-try:
-    from .text_tab import TextGenerationTab
-    from .image_tab import ImageGenerationTab
-    from utils.config import Config
-except ImportError:
-    # Fallback для отладки
-    import sys
-    sys.path.append('..')
-    from text_tab import TextGenerationTab
-    from image_tab import ImageGenerationTab
-    from utils.config import Config
+from .text_tab import TextGenerationTab
+from .image_tab import ImageGenerationTab
+from ..utils.config import Config
 
 
 class MainWindow(QMainWindow):
