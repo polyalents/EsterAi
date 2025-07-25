@@ -7,17 +7,13 @@ AI Desktop Application
 """
 
 import sys
-import os
 from PyQt5.QtWidgets import QApplication, QMessageBox
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QIcon, QFont
 
-# Добавляем текущую директорию в путь
-sys.path.append(os.path.dirname(os.path.abspath(__file__)))
-
 try:
-    from ui.main_window import MainWindow
-    from utils.config import Config
+    from .ui.main_window import MainWindow
+    from .utils.config import Config
 except ImportError as e:
     print(f"Ошибка импорта: {e}")
     print("Убедитесь, что все файлы созданы правильно")
